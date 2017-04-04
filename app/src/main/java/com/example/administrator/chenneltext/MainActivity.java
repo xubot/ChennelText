@@ -13,7 +13,12 @@ import com.amiao.managlibary.dao.MangDao;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public boolean flag = false;
+
+    private String[] mytitle={"热点","新闻","体育","动态"};
+    private String[] other={"美女","房车","喜欢","个性"};
+    private ArrayList<String> otherlist=new ArrayList<>();
+    private ArrayList<String> mylist=new ArrayList<>();
+    private boolean flag = false;
     private GridView gv1;
     private GridView gv2;
     private MangDao dao;
@@ -29,19 +34,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void setGridview()
     {
-
-        String[] mytitle={"热点","新闻","体育","动态"};
-        final String[] other={"美女","房车","喜欢","个性"};
-        final ArrayList<String> otherlist=new ArrayList<String>();
-        for (int i = 0; i <other.length ; i++) {
-            dao.addMore(other[i]);
-            otherlist.add(other[i]);
-        }
-        final ArrayList<String> mylist=new ArrayList<String>();
-        for (int i = 0; i <mytitle.length ; i++) {
-            dao.addMy(mytitle[i]);
-            mylist.add(mytitle[i]);
-        }
+        setData();
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, mylist);
         gv1.setAdapter(adapter);
         final ArrayAdapter<String> adapter1 = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, otherlist);
@@ -54,12 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 dao.getMyTable(otherlist,mylist,mylist.get(position));
                 adapter.notifyDataSetChanged();
                 adapter1.notifyDataSetChanged();
-
             }
         });
-
-
-
 
         gv1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -79,13 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     adapter1.notifyDataSetChanged();
                 }
-
-
                 return true;
             }
         });
-
-
 
         gv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,5 +82,16 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void setData() {
+        for (int i = 0; i <other.length ; i++) {
+            dao.addMore(other[i]);
+            otherlist.add(other[i]);
+        }
+        for (int i = 0; i <mytitle.length ; i++) {
+            dao.addMy(mytitle[i]);
+            mylist.add(mytitle[i]);
+        }
     }
 }
